@@ -1,0 +1,17 @@
+{
+    "name": "ideato/idex",
+    "description": "workshop",
+    "type": "project",
+    "require": {
+        "silex/silex": "^2.0",
+        "guzzlehttp/guzzle": "^6.2",
+        "vlucas/phpdotenv": "^2.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michele Orselli",
+            "email": "mo@ideato.it"
+        }
+    ]
+}
