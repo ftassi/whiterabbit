@@ -38,7 +38,21 @@ $(document).ready(function() {
             })
             .show(event);
          },
-        dayClick: function() { tooltip.hide() },
+        dayClick: function(date, jsEvent, view) {
+            console.log(date);
+            tooltip.hide();
+
+            var modal = $("#myModal");
+
+            modal.find('.modal-title')
+                 .text('Segna ore del ' + date.format('DD/MM/YYYY'));
+
+            modal.find('#hours')
+                 .val('');
+
+            $("#myModal").modal("show");
+        },
+
         firstDay: 1,
         editable: true
     });

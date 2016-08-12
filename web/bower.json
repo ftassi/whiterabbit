@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "fullcalendar": "^2.8.0",
-    "qtip2": "^2.2.1"
+    "qtip2": "^2.2.1",
+    "bootstrap": "^3.3.7"
   }
 }

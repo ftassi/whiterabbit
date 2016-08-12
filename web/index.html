@@ -3,11 +3,13 @@
 <head>
     <title>WhiteRabbit - check your time!</title>
 
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css">
     <link rel="stylesheet" href="bower_components/qtip2/basic/jquery.qtip.min.css">
     <link rel="stylesheet" href="app.css">
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
     <script src="bower_components/qtip2/basic/jquery.qtip.min.js"></script>
@@ -39,6 +41,33 @@
     <div id="container">
         <div id="calendar"></div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Segna Ore</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="message-text" class="control-label">Ticket Id:</label>
+                    <input type="text" class="form-control" id="message-text"></input>
+                </div>
+                <div class="form-group">
+                    <label for="message-text" class="control-label">Ore:</label>
+                    <input id="hours" type="number" step="any" min="0" max="12" class="form-control" id="message-text"></input>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <script src="app.js"></script>
 </body>
