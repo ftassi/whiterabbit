@@ -6,3 +6,5 @@ idxfile.php
 idxrc.php
 ideato_labs.pem
 .git
+.gitattributes
+.gitignore
