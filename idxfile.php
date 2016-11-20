@@ -22,3 +22,9 @@ function deploy(IdephixInterface $idx, $go = false)
     $idx->local("rsync -rlDcz --force --delete --progress --exclude-from '$exclude' $dryRun -e 'ssh' . $user@$host:$remoteDir");
 
 }
+
+function devServer(IdephixInterface $idx)
+{
+    $idx->output->writeln('<comment>Open http://localhost:8080/index.html</comment>');
+    $idx->local('php -S localhost:8080 -d display_errors=0 -t web');
+}
