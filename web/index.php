@@ -75,7 +75,7 @@ EOT;
             $acc['details'] .= $msg;
 
             return $acc;
-        });
+        }, ['hours' => 0, 'details' => '']);
 
         $entry = [];
         $entry['title'] = "". (int) $val['hours_billable'] . " 💰\n" . (int) $val['hours_non_billable'] . " 🔧";
