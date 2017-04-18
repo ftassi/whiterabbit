@@ -51,9 +51,15 @@ function createDailyAggregate($url, $spent_time, $url_generator) {
 
     $results = [];
     foreach ($spent_time as $date => $day) {
+
         $val = array_reduce($day, function($acc, $item) use ($url){
             $acc['hours'] += $item['hours'];
 
+            if ($item['project']['id'] == 4 || $item['project']['id'] == 67) {
+                $acc['hours_non_billable'] += $item['hours'];
+            } else {
+                $acc['hours_billable'] += $item['hours'];
+            }
 
             $msg = <<<EOT
 <br/>
@@ -67,14 +73,17 @@ EOT;
             }
 
             $acc['details'] .= $msg;
+
             return $acc;
         });
 
         $entry = [];
-        $entry['title'] = $val['hours'];
+        $entry['title'] = "". (int) $val['hours_billable'] . " 💰\n" . (int) $val['hours_non_billable'] . " 🔧";
         $entry['start'] = $date;
         $entry['className'] = ['event'];
         $entry['details'] = $val['details'];
+        $entry['hours_billable'] = (int)$val['hours_billable'];
+        $entry['hours_non_billable'] = (int)$val['hours_non_billable'];
 
         if ($val['hours'] >= 6 ) {
             $entry['className'][] = 'good';
@@ -86,6 +95,10 @@ EOT;
 
         if ($val['hours'] < 4) {
             $entry['className'][] = 'nogood';
+        }
+
+        if ($val['hours_billable'] < $val['hours_non_billable']) {
+            $entry['className'][] = 'caotic';
         }
 
         $results[] = $entry;
