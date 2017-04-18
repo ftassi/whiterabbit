@@ -1,4 +1,13 @@
 $(document).ready(function() {
+
+    var user = getUserIdFromUrl();
+    if (user) {
+        $('#timesheet_users').val(user);
+        $('#calendar').fullCalendar('refetchEvents');
+        var textSelected   = $('#timesheet_users option:selected').text();
+        $('.showmsg').text("Showing time for " + textSelected);
+    }
+
     var tooltip = $('<div/>').qtip({
         id: 'calendar',
         content: {
@@ -53,3 +62,20 @@ $(document).ready(function() {
     });
 
 });
+
+function getUserIdFromUrl() {
+  var pieces = [];
+  window.location.search
+    .substring(1)
+    .split('&')
+    .map(function(p) {
+      return p.split('=')
+    })
+    .forEach(function(tuple) {
+      pieces[tuple[0]] = tuple[1];
+    })
+
+  return pieces['user'];
+}
+
+
