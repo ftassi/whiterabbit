@@ -22,18 +22,21 @@ a {
 .nogood {
     background-color: firebrick;
     border-collapse: false;
+    border: 1px solid #9d1e1e;
     border-bottom: 8px solid #9d1e1e;
 }
 
 .warning {
     background-color: darkorange;
     border-collapse: false;
+    border: 1px solid #e67e00;
     border-bottom: 8px solid #e67e00;
 }
 
 .good {
     background-color: seagreen;
     border-collapse: false;
+    border: 1px solid #28784b;
     border-bottom: 8px solid #28784b;
 }
 

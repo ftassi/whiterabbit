@@ -55,17 +55,13 @@ function createDailyAggregate($redmine_url, $spent_time) {
     foreach ($spent_time as $date => $day) {
         $billableHours = array_reduce($day, "sumBillableHours", 0);
         $unBillableHours = array_reduce($day, "sumUnbillableHours", 0);
+        $hours = $billableHours + $unBillableHours;
 
         $entry = [];
-        $entry['title'] = "". (int) $billableHours . " 💰\n" . (int) $unBillableHours . " 🔧";
+        $entry['title'] = "". (float) $billableHours . " 💰\n" . (float) $unBillableHours . " 🔧";
         $entry['start'] = $date;
-        $entry['className'] = ['event'];
         $entry['details'] = array_reduce($day, "generateEntriesDescription", '');
-        $entry['className'][] = getClassNameByHour($hours);
-
-        if ($billableHours < $unBillableHours) {
-            $entry['className'][] = 'caotic';
-        }
+        $entry['className'] = getClassNameByHour($billableHours, $unBillableHours);
 
         $results[] = $entry;
     }
@@ -75,8 +71,8 @@ function createDailyAggregate($redmine_url, $spent_time) {
 
 function sumBillableHours($totalHours, $timeEntry) {
 
-    if ($item['project']['id'] == 4 ||
-        $item['project']['id'] == 67) {
+    if ($timeEntry['project']['id'] == 4 ||
+        $timeEntry['project']['id'] == 67) {
 
         return $totalHours;
     }
@@ -86,8 +82,8 @@ function sumBillableHours($totalHours, $timeEntry) {
 
 function sumUnbillableHours($totalHours, $timeEntry) {
 
-    if ($item['project']['id'] !== 4 ||
-        $item['project']['id'] !== 67) {
+    if ($timeEntry['project']['id'] != 4 &&
+        $timeEntry['project']['id'] != 67) {
 
         return $totalHours;
     }
@@ -112,14 +108,27 @@ EOT;
     return $description . $msg;
 }
 
-function getClassNameByHour($hours) {
+function getClassNameByHour($billableHours, $unBillableHours)
+{
+    $hours = $billableHours + $unBillableHours;
+
+    $classes = ['event'];
+
     if ($hours < 4) {
-        return 'nogood';
+        $classes[] = 'nogood';
     }
 
-    if ($hours < 6) {
-        return 'warning';
+    if ($hours >= 4 && $hours < 6) {
+        $classes[] = 'warning';
     }
 
-    return 'good';
+    if ($hours >= 6) {
+        $classes[] = 'good';
+    }
+
+    if ($billableHours < $unBillableHours) {
+            $classes[] = 'caotic';
+    }
+
+    return $classes;
 }
