@@ -22,7 +22,7 @@ $app->get('/time', function(Request $request) use($app, $redmine_url, $redmine_k
     $user_id = $request->query->get('user') ?: 'me';
 
     $res = getDailySpentTime($redmine_url, $user_id, $start, $end, $redmine_key);
-    $results = createDailyAggregate($redmine_url, $res);
+    $results = createDailyAggregate($res);
 
     return $app->json($results);
 });
@@ -48,14 +48,13 @@ function getDailySpentTime($redmine_url, $user_id, $from, $to, $key) {
     return $timeEntriesByDay;
 }
 
-function createDailyAggregate($redmine_url, $spent_time) {
+function createDailyAggregate($spent_time) {
 
     $results = [];
 
     foreach ($spent_time as $date => $day) {
         $billableHours = array_reduce($day, "sumBillableHours", 0);
         $unBillableHours = array_reduce($day, "sumUnbillableHours", 0);
-        $hours = $billableHours + $unBillableHours;
 
         $entry = [];
         $entry['title'] = "". (float) $billableHours . " 💰\n" . (float) $unBillableHours . " 🔧";
