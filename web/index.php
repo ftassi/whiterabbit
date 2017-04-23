@@ -12,16 +12,15 @@ $dotenv->load();
 $dotenv->required('REDMINE_API_KEY');
 $dotenv->required('REDMINE_URL');
 
-$redmine_key =  getenv('REDMINE_API_KEY');
-$redmine_url = getenv('REDMINE_URL');
 
-$app->get('/time', function(Request $request) use($app, $redmine_url, $redmine_key) {
+$app->get('/time', function(Request $request) use($app) {
+    $redmine_key =  getenv('REDMINE_API_KEY');
 
     $start = $request->query->get('start');
     $end = $request->query->get('end');
     $user_id = $request->query->get('user') ?: 'me';
 
-    $res = getDailySpentTime($redmine_url, $user_id, $start, $end, $redmine_key);
+    $res = getDailySpentTime($user_id, $start, $end, $redmine_key);
     $results = createDailyAggregate($res);
 
     return $app->json($results);
@@ -29,7 +28,8 @@ $app->get('/time', function(Request $request) use($app, $redmine_url, $redmine_k
 
 $app->run();
 
-function getDailySpentTime($redmine_url, $user_id, $from, $to, $key) {
+function getDailySpentTime($user_id, $from, $to, $key) {
+    $redmine_url = getenv('REDMINE_URL');
 
     $url = "$redmine_url/time_entries.json?key=$key&user_id=$user_id&from=$from&to=$to&limit=100";
 
@@ -91,7 +91,7 @@ function sumUnbillableHours($totalHours, $timeEntry) {
 }
 
 function generateEntriesDescription($description, $timeEntry) {
-    global $redmine_url;
+    $redmine_url = getenv('REDMINE_URL');
 
     $msg = <<<EOT
 <br/>
