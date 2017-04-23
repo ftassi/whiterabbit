@@ -4,6 +4,8 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
 
+const UNBILLABLE_PROJECT_IDS = array(4, 47);
+
 $app = new Silex\Application();
 $app['debug'] = true;
 
@@ -14,13 +16,13 @@ $dotenv->required('REDMINE_URL');
 
 
 $app->get('/time', function(Request $request) use($app) {
-    $redmine_key =  getenv('REDMINE_API_KEY');
+    $redmineKey =  getenv('REDMINE_API_KEY');
 
     $start = $request->query->get('start');
     $end = $request->query->get('end');
-    $user_id = $request->query->get('user') ?: 'me';
+    $userId = $request->query->get('user') ?: 'me';
 
-    $res = getDailySpentTime($user_id, $start, $end, $redmine_key);
+    $res = getDailySpentTime($userId, $start, $end, $redmineKey);
     $results = createDailyAggregate($res);
 
     return $app->json($results);
@@ -28,31 +30,31 @@ $app->get('/time', function(Request $request) use($app) {
 
 $app->run();
 
-function getDailySpentTime($user_id, $from, $to, $key) {
-    $redmine_url = getenv('REDMINE_URL');
+function getDailySpentTime($userId, $from, $to, $key) {
+    $redmineUrl = getenv('REDMINE_URL');
 
-    $url = "$redmine_url/time_entries.json?key=$key&user_id=$user_id&from=$from&to=$to&limit=100";
+    $url = "$redmineUrl/time_entries.json?key=$key&user_id=$userId&from=$from&to=$to&limit=100";
 
     $times = json_decode(file_get_contents($url), true);
 
     $timeEntriesByDay = [];
 
-    foreach ($times['time_entries'] as $time_entry) {
-        if (!isset($time_entry['spent_on'])) {
-            $timeEntriesByDay[$time_entry['spent_on']] = [];
+    foreach ($times['time_entries'] as $timeEntry) {
+        if (!isset($timeEntry['spent_on'])) {
+            $timeEntriesByDay[$timeEntry['spent_on']] = [];
         }
 
-        $timeEntriesByDay[$time_entry['spent_on']][] = $time_entry;
+        $timeEntriesByDay[$timeEntry['spent_on']][] = $timeEntry;
     }
 
     return $timeEntriesByDay;
 }
 
-function createDailyAggregate($spent_time) {
+function createDailyAggregate($spentTime) {
 
     $results = [];
 
-    foreach ($spent_time as $date => $day) {
+    foreach ($spentTime as $date => $day) {
         $billableHours = array_reduce($day, "sumBillableHours", 0);
         $unBillableHours = array_reduce($day, "sumUnbillableHours", 0);
 
@@ -70,9 +72,7 @@ function createDailyAggregate($spent_time) {
 
 function sumBillableHours($totalHours, $timeEntry) {
 
-    if ($timeEntry['project']['id'] == 4 ||
-        $timeEntry['project']['id'] == 67) {
-
+    if (in_array($timeEntry['project']['id'], UNBILLABLE_PROJECT_IDS)) {
         return $totalHours;
     }
 
@@ -81,9 +81,7 @@ function sumBillableHours($totalHours, $timeEntry) {
 
 function sumUnbillableHours($totalHours, $timeEntry) {
 
-    if ($timeEntry['project']['id'] != 4 &&
-        $timeEntry['project']['id'] != 67) {
-
+    if (! in_array($timeEntry['project']['id'], UNBILLABLE_PROJECT_IDS)) {
         return $totalHours;
     }
 
