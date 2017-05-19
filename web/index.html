@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>WhiteRabbit - check your time!</title>
 
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css">
@@ -12,9 +13,12 @@
     <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
     <script src="bower_components/qtip2/basic/jquery.qtip.min.js"></script>
     <script src="bower_components/qtip2/basic/jquery.qtip.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
 </head>
 <body>
-    <h2 class="showmsg">Showing time for Michele Orselli</h2>
+  <div class="sidebar">
+    <img class="logo" src="wr-logo.svg" alt="logo">
     <select id="timesheet_users" name="users[]" size="20">
         <option value="6">Manuel Baldassarri</option>
         <option value="158">Nicole Bartolini</option>
@@ -37,11 +41,58 @@
         <option value="124">Vittorio Vittori</option>
         <option value="176">Ettore Delprino</option>
     </select>
-
-    <div id="container">
-        <div id="calendar"></div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <span class="showmsg">Showing time for: <strong>Michele Orselli</strong></span>
     </div>
+    <div id="container" class="main__left">
+      <div id="calendar"></div>
+      <p class="tagline">
+        <span class="good"></span> billable hours <b>> 80%</b>
+        <span class="warning"></span> billable hours <b>> 60%</b>
+        <span class="nogood"></span> billable hours <b>< 60%</b>
+        <span class="missing"></span> missing hours
+      </p>
+    </div>
+    <div class="main__right">
+      <p class="side-title">Questo anno</p>
+      <div class="stat-bar">
+        <div class="stat-bar__not-billable stat-bar--warning" style="width:30%;"></div>
+      </div>
+      <div class="missing-days">18</div>
+      <div class="stat-percentage">
+        <div class="stat-percentage__container">
+          <div class="stat-percentage__billable" style="width:70%;">70%</div>
+          <div class="stat-percentage__not-billable" style="width:30%;">30%</div>
+        </div>
+      </div>
+      <p class="side-title">Questo mese</p>
+      <div class="stat-bar">
+        <div class="stat-bar__not-billable stat-bar--nogood" style="width:50%;"></div>
+      </div>
+      <div class="missing-days">6</div>
+      <div class="stat-percentage">
+        <div class="stat-percentage__container">
+          <div class="stat-percentage__billable" style="width:50%;">50%</div>
+          <div class="stat-percentage__not-billable" style="width:50%;">50%</div>
+        </div>
+      </div>
+      <p class="side-title">Questa settimana</p>
+      <div class="stat-bar">
+        <div class="stat-bar__not-billable stat-bar--good" style="width:15%;"></div>
+      </div>
+      <div class="missing-days">1</div>
+      <div class="stat-percentage">
+        <div class="stat-percentage__container">
+          <div class="stat-percentage__billable" style="width:85%;">85%</div>
+          <div class="stat-percentage__not-billable" style="width:15%;">15%</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script src="app.js"></script>
+  <script src="app.js"></script>
+
 </body>
 </html>

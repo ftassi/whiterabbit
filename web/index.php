@@ -59,7 +59,7 @@ function createDailyAggregate($spentTime) {
         $unBillableHours = array_reduce($day, "sumUnbillableHours", 0);
 
         $entry = [];
-        $entry['title'] = "". (float) $billableHours . " 💰\n" . (float) $unBillableHours . " 🔧";
+        $entry['title'] = "". (float) $billableHours . " [bill-icon]\n" . (float) $unBillableHours . " [unbill-icon]";
         $entry['start'] = $date;
         $entry['details'] = array_reduce($day, "generateEntriesDescription", '');
         $entry['className'] = getClassNameByHour($billableHours, $unBillableHours);
@@ -111,20 +111,20 @@ function getClassNameByHour($billableHours, $unBillableHours)
 
     $classes = ['event'];
 
-    if ($hours < 4) {
-        $classes[] = 'nogood';
+    if ($hours < 8) {
+        $classes[] = 'missing';
     }
 
-    if ($hours >= 4 && $hours < 6) {
-        $classes[] = 'warning';
-    }
-
-    if ($hours >= 6) {
+    if ($billableHours >= 7) {
         $classes[] = 'good';
     }
 
-    if ($billableHours < $unBillableHours) {
-            $classes[] = 'caotic';
+    if ($billableHours >= 5 && $billableHours < 7) {
+        $classes[] = 'warning';
+    }
+
+    if ($billableHours < 5) {
+        $classes[] = 'nogood';
     }
 
     return $classes;

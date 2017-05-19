@@ -41,7 +41,8 @@ $(document).ready(function() {
         dayClick: function() { tooltip.hide() },
         firstDay: 1,
         editable: true
-    });
+      },
+    );
 
     $('#timesheet_users').change(function(e){
         var optionSelected = $(this).find("option:selected");
@@ -49,7 +50,7 @@ $(document).ready(function() {
         localStorage.setItem('whiterabbit_user_id', optionSelected.val());
         $('#calendar').fullCalendar('refetchEvents');
 
-        $('.showmsg').text("Showing time for " + textSelected);
+        $('.showmsg').html("<span class='light'>Showing time for: </span><span class='bold textSelected'>" + textSelected + "</span>");
     });
 
     if (localStorage.getItem('whiterabbit_user_id')) {
