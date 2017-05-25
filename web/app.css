@@ -351,3 +351,21 @@ a {
 .caotic {
     opacity: .6;
 }
+
+#timesheet_users{
+  list-style-type: none;
+}
+
+#timesheet_users li{
+    -webkit-transition: margin 0.2s;
+    cursor: pointer;
+}
+
+#timesheet_users li:hover{
+    font-weight: bold;
+}
+
+#timesheet_users li.selected{
+  font-weight: bold;
+    margin: 10px 0;
+}

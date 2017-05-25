@@ -20,28 +20,28 @@
 <div class="container">
     <div class="sidebar">
         <img class="logo" src="wr-logo.svg" alt="logo">
-        <select id="timesheet_users" name="users[]" size="20">
-            <option value="6">Manuel Baldassarri</option>
-            <option value="158">Nicole Bartolini</option>
-            <option value="160">Pietro Campagnano</option>
-            <option value="151">Denis Casanuova</option>
-            <option value="173">Marco Colombo</option>
-            <option value="130">Simone D'Amico</option>
-            <option value="120">Riccardo Franconi</option>
-            <option value="5">Francesco Fullone</option>
-            <option value="127">moreno giorgini</option>
-            <option value="163">Marco Masotti</option>
-            <option value="129">Alessandro Mazzoli</option>
-            <option value="169">Cristiano Mazzarini</option>
-            <option value="3">Michele Orselli</option>
-            <option value="170">Marco Radossi</option>
-            <option value="171">Carla Soloperto</option>
-            <option value="95">Francesco Tassi</option>
-            <option value="142">Paolo Tonin</option>
-            <option value="4">Francesco Trucchia</option>
-            <option value="124">Vittorio Vittori</option>
-            <option value="176">Ettore Delprino</option>
-        </select>
+        <ul id="timesheet_users">
+            <li data-userid="6">Manuel Baldassarri</li>
+            <li data-userid="158">Nicole Bartolini</li>
+            <li data-userid="160">Pietro Campagnano</li>
+            <li data-userid="151">Denis Casanuova</li>
+            <li data-userid="173">Marco Colombo</li>
+            <li data-userid="130">Simone D'Amico</li>
+            <li data-userid="120">Riccardo Franconi</li>
+            <li data-userid="5">Francesco Fullone</li>
+            <li data-userid="127">moreno giorgini</li>
+            <li data-userid="163">Marco Masotti</li>
+            <li data-userid="129">Alessandro Mazzoli</li>
+            <li data-userid="169">Cristiano Mazzarini</li>
+            <li data-userid="3">Michele Orselli</li>
+            <li data-userid="170">Marco Radossi</li>
+            <li data-userid="171">Carla Soloperto</li>
+            <li data-userid="95">Francesco Tassi</li>
+            <li data-userid="142">Paolo Tonin</li>
+            <li data-userid="4">Francesco Trucchia</li>
+            <li data-userid="124">Vittorio Vittori</li>
+            <li data-userid="176">Ettore Delprino</li>
+        </ul>
     </div>
     <div class="main">
         <div class="topbar">
@@ -60,18 +60,18 @@
             <div class="year-totals">
                 <p class="side-title">Questo anno</p>
                 <div class="stat-bar">
-                <div class="stat-bar__not-billable stat-bar--warning"></div>
+                    <div class="stat-bar__not-billable stat-bar--warning"></div>
                 </div>
                 <!--<div class="missing-days"></div>-->
                 <div class="stat-percentage">
-                <div class="stat-percentage__container">
-                <div class="stat-percentage__billable" ></div>
-                <div class="stat-percentage__not-billable" ></div>
-                </div>
+                    <div class="stat-percentage__container">
+                        <div class="stat-percentage__billable"></div>
+                        <div class="stat-percentage__not-billable"></div>
+                    </div>
                 </div>
             </div>
             <div class="month-totals">
-                <p class="side-title">Questo mese (giorni visualizzati)</p>
+                <p class="side-title">Questo mese</p>
                 <div class="stat-bar">
                     <div class="stat-bar__not-billable stat-bar--nogood"></div>
                 </div>
@@ -83,18 +83,20 @@
                     </div>
                 </div>
             </div>
+            <div class="week-totals">
+                <p class="side-title">Questa settimana</p>
+                <div class="stat-bar">
+                    <div class="stat-bar__not-billable stat-bar--good"></div>
+                </div>
+                <!--<div class="missing-days">1</div>-->
+                <div class="stat-percentage">
+                    <div class="stat-percentage__container">
+                        <div class="stat-percentage__billable"></div>
+                        <div class="stat-percentage__not-billable"></div>
+                    </div>
+                </div>
+            </div>
 
-            <!--<p class="side-title">Questa settimana</p>-->
-            <!--<div class="stat-bar">-->
-            <!--<div class="stat-bar__not-billable stat-bar&#45;&#45;good" style="width:15%;"></div>-->
-            <!--</div>-->
-            <!--<div class="missing-days">1</div>-->
-            <!--<div class="stat-percentage">-->
-            <!--<div class="stat-percentage__container">-->
-            <!--<div class="stat-percentage__billable" style="width:85%;">85%</div>-->
-            <!--<div class="stat-percentage__not-billable" style="width:15%;">15%</div>-->
-            <!--</div>-->
-            <!--</div>-->
 
         </div>
     </div>

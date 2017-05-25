@@ -1,98 +1,115 @@
-$(document).ready(function() {
-    var tooltip = $('<div/>').qtip({
-        id: 'calendar',
-        content: {
-            text: ' ',
-            title: {
-                button: true
-            }
-        },
-        position: {
-            my: 'bottom right',
-            at: 'top center',
-            target: 'event',
-        },
-        show: false,
-        hide: false,
-        style: 'qtip-blue'
-    }).qtip('api');
+$(document).ready(function () {
+  var tooltip = $('<div/>').qtip({
+    id: 'calendar',
+    content: {
+      text: ' ',
+      title: {
+        button: true
+      }
+    },
+    position: {
+      my: 'bottom right',
+      at: 'top center',
+      target: 'event',
+    },
+    show: false,
+    hide: false,
+    style: 'qtip-blue'
+  }).qtip('api');
 
-    $('#calendar').fullCalendar({
+  $('#calendar').fullCalendar({
         header: {
-            right: 'next',
-            center: 'title today',
-            left: 'prev'
+          right: 'next',
+          center: 'title today',
+          left: 'prev'
         },
         events: {
-            url: '/time',
-            data: function(){
-                return {
-                    user: $("#timesheet_users" ).val()
-                }
+          url: '/time',
+          data: function () {
+            return {
+              user: $("#timesheet_users .selected").data('userid')
             }
+          }
         },
-        eventClick: function(data, event, view) {
-            tooltip.set({
-                'content.text': data.details,
-                'style.classes': 'qtip-blue qtip-my ' + data.className[1]
-            })
-            .show(event);
-         },
-        dayClick: function() { tooltip.hide() },
+        eventClick: function (data, event, view) {
+          tooltip.set({
+            'content.text': data.details,
+            'style.classes': 'qtip-blue qtip-my ' + data.className[1]
+          })
+              .show(event);
+        },
+        dayClick: function () {
+          tooltip.hide()
+        },
         firstDay: 1,
-        editable: true
+        editable: true,
+        viewRender: function (view, element) {
+          getTotals();
+        }
       }
-    );
+  );
 
-    $('#timesheet_users').change(function(e){
-        var optionSelected = $(this).find("option:selected");
-        var textSelected   = optionSelected.text();
-        localStorage.setItem('whiterabbit_user_id', optionSelected.val());
-        $('#calendar').fullCalendar('refetchEvents');
+  $('#timesheet_users li').click(function () {
+    if($(this).hasClass('selected')){
+      return;
+    }
+    $('ul#timesheet_users li').removeClass('selected');
+    $(this).addClass('selected');
 
-        $('.showmsg').html("<span class='light'>Showing time for: </span><span class='bold textSelected'>" + textSelected + "</span>");
+    var userId = $(this).data('userid');
+    var textSelected = $(this).text();
+    localStorage.setItem('whiterabbit_user_id', userId);
+    $('#calendar').fullCalendar('refetchEvents');
+    $('.showmsg').html("<span class='light'>Showing time for: </span><span class='bold textSelected'>" + textSelected + "</span>");
 
-        getTotals();
+    getTotals();
+  });
+
+  if (localStorage.getItem('whiterabbit_user_id')) {
+    var storedUserId = localStorage.getItem('whiterabbit_user_id')
+    $("li[data-userid='"+storedUserId+"']").click();
+  }
+
+  function getTotals () {
+    var user = $("ul#timesheet_users li.selected").data('userid');
+
+    var year = new Date().getFullYear();
+    var start = year + '-01-01';
+    var end = year + '-12-31'
+    setTotals(user, start, end, '.year-totals');
+
+    var view = $('#calendar').fullCalendar('getView');
+    var viewTitleDate = new Date(view.title);
+    var firstDay = new Date(viewTitleDate.getFullYear(), viewTitleDate.getMonth(), 1);
+    var lastDay = new Date(viewTitleDate.getFullYear(), viewTitleDate.getMonth() + 1, 0);
+    start = buildDateString(firstDay);
+    end = buildDateString(lastDay);
+    setTotals(user, start, end, '.month-totals');
+
+    var curr = new Date();
+    firstDay = new Date(curr.setDate(curr.getDate() - curr.getDay() + 1));
+    lastDay = new Date(curr.setDate(curr.getDate() - curr.getDay() + 5));
+    start = buildDateString(firstDay);
+    end = buildDateString(lastDay);
+    setTotals(user, start, end, '.week-totals');
+  }
+
+  function setTotals (user, start, end, wrapperSelector) {
+    var timestamp = new Date().getTime();
+    $.get("totals?user=" + user + "&start=" + start + "&end=" + end + "&_=" + timestamp, function (data) {
+      $(wrapperSelector + ' .stat-bar__not-billable').animate(
+          {'width': data.percUnbillable + "%"}
+      );
+      $(wrapperSelector + ' .stat-percentage__billable').animate(
+          {'width': data.percBillable + "%"}
+      ).html(data.percBillable + "%");
+      $(wrapperSelector + ' .stat-percentage__not-billable').animate(
+          {'width': data.percUnbillable + "%"}
+      ).html(data.percUnbillable + "%");
     });
+  }
 
-    if (localStorage.getItem('whiterabbit_user_id')) {
-        $("#timesheet_users" ).val(localStorage.getItem('whiterabbit_user_id'));
-        $("#timesheet_users" ).trigger("change");
-    }
-
-    function getTotals(){
-        var user = $("#timesheet_users" ).val();
-        // console.log("getting totals for user " + user);
-
-        var view = $('#calendar').fullCalendar( 'getView' );
-        var start = view.start.format('YYYY-MM-DD');
-        var end = view.end.format('YYYY-MM-DD');
-        var timestamp = new Date().getTime();
-
-        $.get( "totals?user="+user+"&start="+start+"&end="+end+"&_=" + timestamp, function( data ) {
-          $('.month-totals .stat-bar__not-billable').css('width', data.percUnbillable + "%")
-          $('.month-totals .stat-percentage__billable').css('width', data.percBillable + "%")
-          $('.month-totals .stat-percentage__billable').html(data.percBillable + "%")
-          $('.month-totals .stat-percentage__not-billable').css('width', data.percUnbillable + "%")
-          $('.month-totals .stat-percentage__not-billable').html(data.percUnbillable + "%")
-        });
-
-        var year = new Date().getFullYear();
-        start = year + '01-01';
-        end = year + '12-31'
-
-        // var date1 = new Date();
-        // var date2 = new Date(year+"-12-31");
-        // var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-        // var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // should be only working days?
-
-      $.get( "totals?user="+user+"&start="+start+"&end="+end+"&_=" + timestamp, function( data ) {
-        $('.year-totals .stat-bar__not-billable').css('width', data.percUnbillable + "%")
-        $('.year-totals .stat-percentage__billable').css('width', data.percBillable + "%")
-        $('.year-totals .stat-percentage__billable').html(data.percBillable + "%")
-        $('.year-totals .stat-percentage__not-billable').css('width', data.percUnbillable + "%")
-        $('.year-totals .stat-percentage__not-billable').html(data.percUnbillable + "%")
-        // $('.year-totals .missing-days').html(diffDays);
-      });
-    }
+  function buildDateString(dateObj){
+    return dateObj.getFullYear() + "-" + ('0' + (dateObj.getMonth() + 1)).slice(-2) + "-" + ('0' + dateObj.getDate()).slice(-2);
+  }
 });
