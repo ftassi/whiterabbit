@@ -28,6 +28,32 @@ $app->get('/time', function(Request $request) use($app) {
     return $app->json($results);
 });
 
+$app->get('/totals', function(Request $request) use($app) {
+    $redmineKey =  getenv('REDMINE_API_KEY');
+
+    $start = $request->query->get('start');
+    $end = $request->query->get('end');
+    $userId = $request->query->get('user') ?: 'me';
+
+    $spentTime = getDailySpentTime($userId, $start, $end, $redmineKey);
+
+    $totalBillable = 0;
+    $totalUnbillable = 0;
+
+    foreach ($spentTime as $date => $day) {
+        $billableHours = array_reduce($day, "sumBillableHours", 0);
+        $unBillableHours = array_reduce($day, "sumUnbillableHours", 0);
+
+        $totalBillable += (float) $billableHours;
+        $totalUnbillable += (float) $unBillableHours;
+    }
+
+    $percBillable = round(($totalBillable * 100) / ($totalBillable + $totalUnbillable));
+    $percUnbillable = 100 - $percBillable;
+
+    return $app->json(['percBillable' => $percBillable, 'percUnbillable' => $percUnbillable]);
+});
+
 $app->run();
 
 function getDailySpentTime($userId, $from, $to, $key) {
