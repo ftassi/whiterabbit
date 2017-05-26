@@ -369,3 +369,12 @@ a {
   font-weight: bold;
     margin: 10px 0;
 }
+
+a.fc-event {
+  z-index: 1;
+  background: transparent;
+}
+
+.qtip-content, .qtip-content *{
+  color: black;
+}

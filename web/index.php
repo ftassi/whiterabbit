@@ -91,7 +91,9 @@ function createDailyAggregate($spentTime)
         $unBillableHours = array_reduce($day, "sumUnbillableHours", 0);
 
         $entry              = [];
-        $entry['title']     = "" . (float)$billableHours . " [bill-icon]\n" . (float)$unBillableHours . " [unbill-icon]";
+        $entry['title']     = "" . (float)$billableHours . " billable \n" . (float)$unBillableHours . " unbillable";
+        $event['billableHours'] = (float)$billableHours;
+        $event['unbillableHours'] = (float)$unBillableHours;
         $entry['start']     = $date;
         $entry['details']   = array_reduce($day, "generateEntriesDescription", '');
         $entry['className'] = getClassNameByHour($billableHours, $unBillableHours);

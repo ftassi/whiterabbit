@@ -31,7 +31,13 @@ $(document).ready(function () {
             }
           }
         },
+        // eventRender: function (event, element, view) {
+          // return $('<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event missing warning fc-draggable fc-resizable">' +
+          //     '<div class="fc-content"> <span class="fc-title">' + event.billableHours + ' [icon-here] <br> ' + event.unBillableHours + ' [icon-here]</span></div><div class="fc-resizer fc-end-resizer"></div>' +
+          //     '</a>');
+        // },
         eventClick: function (data, event, view) {
+          console.log();
           tooltip.set({
             'content.text': data.details,
             'style.classes': 'qtip-blue qtip-my ' + data.className[1]
@@ -50,7 +56,7 @@ $(document).ready(function () {
   );
 
   $('#timesheet_users li').click(function () {
-    if($(this).hasClass('selected')){
+    if ($(this).hasClass('selected')) {
       return;
     }
     $('ul#timesheet_users li').removeClass('selected');
@@ -67,7 +73,7 @@ $(document).ready(function () {
 
   if (localStorage.getItem('whiterabbit_user_id')) {
     var storedUserId = localStorage.getItem('whiterabbit_user_id')
-    $("li[data-userid='"+storedUserId+"']").click();
+    $("li[data-userid='" + storedUserId + "']").click();
   }
 
   function getTotals () {
@@ -109,7 +115,7 @@ $(document).ready(function () {
     });
   }
 
-  function buildDateString(dateObj){
+  function buildDateString (dateObj) {
     return dateObj.getFullYear() + "-" + ('0' + (dateObj.getMonth() + 1)).slice(-2) + "-" + ('0' + dateObj.getDate()).slice(-2);
   }
 });
