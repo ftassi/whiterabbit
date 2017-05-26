@@ -31,11 +31,13 @@ $(document).ready(function () {
             }
           }
         },
-        // eventRender: function (event, element, view) {
-          // return $('<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event missing warning fc-draggable fc-resizable">' +
-          //     '<div class="fc-content"> <span class="fc-title">' + event.billableHours + ' [icon-here] <br> ' + event.unBillableHours + ' [icon-here]</span></div><div class="fc-resizer fc-end-resizer"></div>' +
-          //     '</a>');
-        // },
+        eventRender: function (event, element, view) {
+          var billableHours = parseFloat(event.title.split('||')[0]);
+          var unBillableHours = parseFloat(event.title.split('||')[1]);
+          return $('<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event missing warning fc-draggable fc-resizable '+event.className+'">' +
+              '<div class="fc-content"> <span class="fc-title">' + billableHours + ' [icon-here] <br> ' + unBillableHours + ' [icon-here]</span></div><div class="fc-resizer fc-end-resizer"></div>' +
+              '</a>');
+        },
         eventClick: function (data, event, view) {
           console.log();
           tooltip.set({
