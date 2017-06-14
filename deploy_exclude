@@ -8,3 +8,5 @@ ideato_labs.pem
 .git
 .gitattributes
 .gitignore
+.env
+.idea
