@@ -14,6 +14,15 @@ $dotenv->load();
 $dotenv->required('REDMINE_API_KEY');
 $dotenv->required('REDMINE_URL');
 
+$app->get('/buttons', function (Request $request) use ($app) {
+    $results = "";
+    if (getenv('REPORT_URL')) {
+        $withApp = empty(getenv('REPORT_APP_NAME')) ? "" : " with " . getenv('REPORT_APP_NAME');
+        $results = "<a href='" . getenv('REPORT_URL') . "' target='_blank' ><button class='report-btn'>Add a report" . $withApp . "!</button></a>";
+    }
+
+    return $app->json($results);
+});
 
 $app->get('/time', function (Request $request) use ($app) {
     $redmineKey = getenv('REDMINE_API_KEY');

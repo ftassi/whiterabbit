@@ -1,4 +1,9 @@
 $(document).ready(function () {
+
+  $.get("buttons", function (data) {
+    $("#buttons").html(data);
+  });
+
   var tooltip = $('<div/>').qtip({
     id: 'calendar',
     content: {
