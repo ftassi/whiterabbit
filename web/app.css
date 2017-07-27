@@ -87,8 +87,8 @@ html, body {
 
 .fc-today-button {
     background: none;
-    color: #11EFF1;
-    border: 1px solid #11EFF1;
+    color: #168fec;
+    border: 1px solid #168fec;
     text-transform: uppercase;
     font-size: 12px !important;
     display: inline-block;
@@ -153,7 +153,7 @@ html, body {
     content: '';
     position: absolute;
     display: inline-block;
-    background: #11EFF1;
+    background: #168fec;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -232,9 +232,8 @@ span.good {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #C0FF16;
+    background: #86b20f;
     vertical-align: middle;
-    margin-left: 20px;
 }
 
 span.warning {
@@ -244,7 +243,6 @@ span.warning {
     border-radius: 50%;
     background: #FBEE1E;
     vertical-align: middle;
-    margin-left: 20px;
 }
 
 span.nogood {
@@ -254,7 +252,6 @@ span.nogood {
     border-radius: 50%;
     background: #FBA31E;
     vertical-align: middle;
-    margin-left: 20px;
 }
 
 span.missing {
@@ -264,7 +261,6 @@ span.missing {
     border-radius: 50%;
     background: #F13153;
     vertical-align: middle;
-    margin-left: 20px;
 }
 
 .main__right {
@@ -274,7 +270,8 @@ span.missing {
 }
 
 .side-title {
-    padding: 50px 0 0;
+    padding: 30px 0 0;
+    margin: 10px 0 2px;
     font-weight: 600;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.3);
@@ -377,6 +374,9 @@ a {
     height: 100%;
     font-family: 'Open Sans', sans-serif;
 }
+#timesheet_users li {
+    text-transform: capitalize;
+}
 
 #timesheet_users option {
     margin-bottom: 7px;
@@ -440,10 +440,11 @@ span.fc-title img {
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
-    background: white;
-    border: 1px solid lightgrey;
+    border: 1px solid #168fec;
+    color: #168fec;
+    background: transparent;
 }
 
 .report-btn:hover{
-    background: lightgrey;
+    box-shadow: 0 2px solid rgba(0,0,0,0.2);
 }

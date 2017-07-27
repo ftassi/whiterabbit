@@ -110,6 +110,16 @@ $(document).ready(function () {
   function setTotals (user, start, end, wrapperSelector) {
     var timestamp = new Date().getTime();
     $.get("totals?user=" + user + "&start=" + start + "&end=" + end + "&_=" + timestamp, function (data) {
+      if( data.percUnbillable >= 40 ) {
+        $(wrapperSelector + ' .stat-bar__not-billable').attr('class', 'stat-bar__not-billable').addClass('stat-bar--nogood');
+      }
+      if((data.percUnbillable >= 20) && (data.percUnbillable < 40)) {
+        $(wrapperSelector + ' .stat-bar__not-billable').attr('class', 'stat-bar__not-billable').addClass('stat-bar--warning');
+      }
+      if(data.percUnbillable < 20) {
+        $(wrapperSelector + ' .stat-bar__not-billable').attr('class', 'stat-bar__not-billable').addClass('stat-bar--good');
+      }
+
       $(wrapperSelector + ' .stat-bar__not-billable').animate(
           {'width': data.percUnbillable + "%"}
       );

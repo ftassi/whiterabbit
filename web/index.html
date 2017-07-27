@@ -49,20 +49,14 @@
         </div>
         <div id="container" class="main__left">
             <div id="calendar"></div>
-            <p class="tagline">
-                <span class="good"></span> billable hours <b>> 80%</b>
-                <span class="warning"></span> billable hours <b>> 60%</b>
-                <span class="nogood"></span> billable hours <b>< 60%</b>
-                <span class="missing"></span> missing hours
-            </p>
         </div>
         <div class="main__right">
-            <div class="year-totals">
-                <p class="side-title">Questo anno</p>
+            <div class="week-totals">
+                <p class="side-title">Questa settimana</p>
                 <div class="stat-bar">
-                    <div class="stat-bar__not-billable stat-bar--warning"></div>
+                    <div class="stat-bar__not-billable"></div>
                 </div>
-                <!--<div class="missing-days"></div>-->
+                <!--<div class="missing-days">1</div>-->
                 <div class="stat-percentage">
                     <div class="stat-percentage__container">
                         <div class="stat-percentage__billable"></div>
@@ -73,7 +67,7 @@
             <div class="month-totals">
                 <p class="side-title">Questo mese</p>
                 <div class="stat-bar">
-                    <div class="stat-bar__not-billable stat-bar--nogood"></div>
+                    <div class="stat-bar__not-billable"></div>
                 </div>
                 <!--<div class="missing-days"></div>-->
                 <div class="stat-percentage">
@@ -83,12 +77,12 @@
                     </div>
                 </div>
             </div>
-            <div class="week-totals">
-                <p class="side-title">Questa settimana</p>
+            <div class="year-totals">
+                <p class="side-title">Questo anno</p>
                 <div class="stat-bar">
-                    <div class="stat-bar__not-billable stat-bar--good"></div>
+                    <div class="stat-bar__not-billable"></div>
                 </div>
-                <!--<div class="missing-days">1</div>-->
+                <!--<div class="missing-days"></div>-->
                 <div class="stat-percentage">
                     <div class="stat-percentage__container">
                         <div class="stat-percentage__billable"></div>
@@ -96,6 +90,12 @@
                     </div>
                 </div>
             </div>
+            <p class="tagline">
+                <span class="good"></span> GOOD: billable hours <b>> 80%</b><br>
+                <span class="warning"></span> WARNING: billable hours <b>> 60%</b><br>
+                <span class="nogood"></span> BAD: billable hours <b>< 60%</b><br>
+                <span class="missing"></span> missing hours
+            </p>
             <div id="buttons"></div>
         </div>
     </div>
