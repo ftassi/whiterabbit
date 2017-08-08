@@ -348,15 +348,61 @@ a {
     padding-left: 10px;
 }
 
-.qtip-content {
-    word-wrap: normal;
-}
-
-.qtip-my {
+.qtip-default {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    border-radius: 4px;
+    background-color: #363947;
     line-height: 1.1em;
-    color: white;
+    color: rgba(255,255,255,0.7);
     width: 600px !important;
     font-size: 1.1em;
+    font-weight: 300;
+}
+
+.qtip-content {
+    word-wrap: normal;
+    padding: 10px 20px 20px;
+    font-weight: 300;
+}
+.qtip-content a {
+  font-weight: 400;
+  color: #fff;
+  text-decoration: none;
+}
+.qtip-content .small {
+    display: inline-block;
+}
+
+.qtip-default.good {
+    border-bottom: 5px solid #C0FF16;
+}
+.qtip-default.warning {
+    border-bottom: 5px solid #FBEE1E;
+}
+.qtip-default.nogood {
+    border-bottom: 5px solid #FBA31E;
+}
+.qtip-default.missing {
+    border: 2px solid #F13153;
+}
+
+.qtip-close.qtip-icon {
+    right: -3px;
+    top: -3px;
+    border: none;
+    background: #363947;
+    color: white;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 50%;
+}
+.qtip-icon .ui-icon {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
 }
 
 .fc-sun {
@@ -371,9 +417,10 @@ a {
     background: none;
     overflow: auto;
     border: none;
-    color: white;
+    color: rgba(255,255,255,0.7);
     height: 100%;
     font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
 }
 #timesheet_users li {
     text-transform: capitalize;
@@ -398,21 +445,18 @@ a {
 }
 
 #timesheet_users li:hover {
-    font-weight: bold;
+    color: white;
 }
 
 #timesheet_users li.selected {
-    font-weight: bold;
+    font-weight: 400;
     margin: 10px 0;
+    color: white;
 }
 
 a.fc-event {
     z-index: 1;
     background: transparent;
-}
-
-.qtip-content, .qtip-content * {
-    color: black;
 }
 
 span.fc-title img {

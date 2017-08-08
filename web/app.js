@@ -105,6 +105,22 @@ $(document).ready(function () {
     start = buildDateString(firstDay);
     end = buildDateString(lastDay);
     setTotals(user, start, end, '.week-totals');
+
+    var statbarNumMonth = viewTitleDate.getMonth();
+    var statbarYear = viewTitleDate.getFullYear();
+    if (statbarNumMonth == 0) { var statbarMonth = "January"}
+    if (statbarNumMonth == 1) { var statbarMonth = "February"}
+    if (statbarNumMonth == 2) { var statbarMonth = "March"}
+    if (statbarNumMonth == 3) { var statbarMonth = "April"}
+    if (statbarNumMonth == 4) { var statbarMonth = "May"}
+    if (statbarNumMonth == 5) { var statbarMonth = "June"}
+    if (statbarNumMonth == 6) { var statbarMonth = "July"}
+    if (statbarNumMonth == 7) { var statbarMonth = "August"}
+    if (statbarNumMonth == 8) { var statbarMonth = "September"}
+    if (statbarNumMonth == 9) { var statbarMonth = "October"}
+    if (statbarNumMonth == 10) { var statbarMonth = "November"}
+    if (statbarNumMonth == 11) { var statbarMonth = "December"}
+    $('.month-totals p').html(statbarMonth + ' ' + statbarYear);
   }
 
   function setTotals (user, start, end, wrapperSelector) {
