@@ -208,8 +208,13 @@ html, body {
 }
 
 .event.missing {
-    border: 1px solid #F13153;
+    border: 1px solid #F13166;
     color: #F13153;
+}
+
+.event.holidays {
+    border: 1px solid #0000ff;
+    color: #0000ff;
 }
 
 .fc-title {

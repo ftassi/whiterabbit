@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Request;
 
 const UNBILLABLE_PROJECT_IDS = array(4, 47);
+const HOLIDAY_IDS = array(12362);
 
 $app          = new Silex\Application();
 $app['debug'] = true;
@@ -22,6 +23,29 @@ $app->get('/buttons', function (Request $request) use ($app) {
     }
 
     return $app->json($results);
+});
+
+$app->get('/dashboard', function (Request $request) use ($app){
+
+    $redmineKey = getenv('REDMINE_API_KEY');
+
+    $userIds = [
+"6", "158","160","151","173","130","120","5","127",
+"163","129","169","3","170","171","95","142","4","124","176",
+];
+
+    $start  = $request->query->get('start');
+    $end    = $request->query->get('end');
+
+    $results = [];
+
+    foreach ($userIds as $userId) {
+        $daily     = getDailyTotalSpentTime($userId, $start, $end, $redmineKey);
+
+        $result[$userId] = $daily;
+    }
+
+    return $app->json($result);
 });
 
 $app->get('/time', function (Request $request) use ($app) {
@@ -92,18 +116,18 @@ function getDailySpentTime($userId, $from, $to, $key)
 
 function createDailyAggregate($spentTime)
 {
-
     $results = [];
 
     foreach ($spentTime as $date => $day) {
         $billableHours   = array_reduce($day, "sumBillableHours", 0);
         $unBillableHours = array_reduce($day, "sumUnbillableHours", 0);
+        $holidayHours = array_reduce($day, "sumHolidayHours", 0);
 
         $entry              = [];
-        $entry['title']     = (float)$billableHours . "||" . (float)$unBillableHours;
+        $entry['title']     = (float)$billableHours . "||" . (float)$unBillableHours . "||" . (float)$holidayHours;
         $entry['start']     = $date;
         $entry['details']   = array_reduce($day, "generateEntriesDescription", '');
-        $entry['className'] = getClassNameByHour($billableHours, $unBillableHours);
+        $entry['className'] = getClassNameByHour($billableHours, $unBillableHours, $holidayHours);
 
         $results[] = $entry;
     }
@@ -111,10 +135,20 @@ function createDailyAggregate($spentTime)
     return $results;
 }
 
+function sumHolidayHours($totalHours, $timeEntry)
+{
+    if (!in_array($timeEntry['issue']['id'], HOLIDAY_IDS)) {
+        return $totalHours;
+    }
+
+    return $totalHours + $timeEntry['hours'];
+}
+
 function sumBillableHours($totalHours, $timeEntry)
 {
+    if (in_array($timeEntry['project']['id'], UNBILLABLE_PROJECT_IDS) ||
+        in_array($timeEntry['issue']['id'], HOLIDAY_IDS)) {
 
-    if (in_array($timeEntry['project']['id'], UNBILLABLE_PROJECT_IDS)) {
         return $totalHours;
     }
 
@@ -123,8 +157,9 @@ function sumBillableHours($totalHours, $timeEntry)
 
 function sumUnbillableHours($totalHours, $timeEntry)
 {
+    if ( ! in_array($timeEntry['project']['id'], UNBILLABLE_PROJECT_IDS) ||
+         in_array($timeEntry['issue']['id'], HOLIDAY_IDS)) {
 
-    if ( ! in_array($timeEntry['project']['id'], UNBILLABLE_PROJECT_IDS)) {
         return $totalHours;
     }
 
@@ -149,11 +184,17 @@ EOT;
     return $description . $msg;
 }
 
-function getClassNameByHour($billableHours, $unBillableHours)
+function getClassNameByHour($billableHours, $unBillableHours, $holidayHours)
 {
     $hours = $billableHours + $unBillableHours;
 
     $classes = ['event'];
+
+    if ($holidayHours > 0) {
+        $classes[] = 'holidays';
+
+        return $classes;
+    }
 
     if ($hours < 8) {
         $classes[] = 'missing';

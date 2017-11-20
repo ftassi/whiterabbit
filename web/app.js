@@ -39,10 +39,18 @@ $(document).ready(function () {
         eventRender: function (event, element, view) {
           var billableHours = parseFloat(event.title.split('||')[0]);
           var unBillableHours = parseFloat(event.title.split('||')[1]);
+          var holidayHours = parseFloat(event.title.split('||')[2]);
+
+          if (holidayHours > 0) {
+            return $('<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event fc-draggable fc-resizable ' + event.className.join(' ') + '">' +
+              '<div class="fc-content"> <span class="fc-title">' + holidayHours + ' <img src="holidays.svg"><br></span></div><div class="fc-resizer fc-end-resizer"></div></a>');
+          }
+
           return $('<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event fc-draggable fc-resizable ' + event.className.join(' ') + '">' +
               '<div class="fc-content"> <span class="fc-title">' + billableHours + ' <img src="billable.svg"><br>' + unBillableHours + ' <img src="not-billable.svg"></span></div><div class="fc-resizer fc-end-resizer"></div>' +
               '</a>');
         },
+
         eventClick: function (data, event, view) {
           console.log();
           tooltip.set({
