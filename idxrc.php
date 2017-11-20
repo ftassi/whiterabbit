@@ -2,7 +2,7 @@
 
 $targets = array(
     'prod' => array(
-        'hosts' => array('52.29.194.12'),
+        'hosts' => array('52.57.245.198'),
         'ssh_params' => ['user' => 'ideato'],
         'deploy' => array(
             'local_dir' => ".",
