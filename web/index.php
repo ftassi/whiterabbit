@@ -190,10 +190,16 @@ function getClassNameByHour($billableHours, $unBillableHours, $holidayHours)
 
     $classes = ['event'];
 
-    if ($holidayHours > 0) {
+    if ($holidayHours == 8) {
         $classes[] = 'holidays';
+    }
 
-        return $classes;
+    if ($billableHours == 8) {
+        $classes[] = 'billable';
+    }
+
+    if ($unBillableHours == 8) {
+        $classes[] = 'unbillable';
     }
 
     if ($hours < 8) {

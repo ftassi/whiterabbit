@@ -41,15 +41,31 @@ $(document).ready(function () {
           var unBillableHours = parseFloat(event.title.split('||')[1]);
           var holidayHours = parseFloat(event.title.split('||')[2]);
 
-          if (holidayHours > 0) {
-            return $('<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event fc-draggable fc-resizable ' + event.className.join(' ') + '">' +
-              '<div class="fc-content"> <span class="fc-title">' + holidayHours + ' <img src="holidays.svg"><br></span></div><div class="fc-resizer fc-end-resizer"></div></a>');
+          var tpl = '<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event fc-draggable fc-resizable ' + event.className.join(' ') + '">' + '<div class="fc-content">' + '<span class="fc-title">';
+
+          if (billableHours > 0 ) {
+            tpl += billableHours + ' <img src="billable.svg">';
           }
 
-          return $('<a class="fc-day-grid-event fc-h-event fc-event fc-start fc-end event fc-draggable fc-resizable ' + event.className.join(' ') + '">' +
-              '<div class="fc-content"> <span class="fc-title">' + billableHours + ' <img src="billable.svg"><br>' + unBillableHours + ' <img src="not-billable.svg"></span></div><div class="fc-resizer fc-end-resizer"></div>' +
-              '</a>');
+          if (unBillableHours > 0 ) {
+
+            if (billableHours > 0) {
+              tpl += '&nbsp;&nbsp;&nbsp;';
+            }
+
+            tpl += unBillableHours + ' <img src="not-billable.svg">';
+          }
+
+          if (holidayHours > 0 ) {
+            tpl += holidayHours + ' <img src="holidays.svg">';
+          }
+
+          tpl += '</span>' + '</div>' + '<div class="fc-resizer fc-end-resizer"></div>' + '</a>';
+
+          return $(tpl);
         },
+
+
 
         eventClick: function (data, event, view) {
           console.log();
