@@ -50,13 +50,21 @@ $(document).ready(function () {
           if (unBillableHours > 0 ) {
 
             if (billableHours > 0) {
-              tpl += '&nbsp;&nbsp;&nbsp;';
+              tpl += '<br>';
             }
 
             tpl += unBillableHours + ' <img src="not-billable.svg">';
           }
 
           if (holidayHours > 0 ) {
+
+
+            if (billableHours > 0 && unBillableHours > 0) {
+              tpl += '&nbsp;&nbsp;';
+            } else if (billableHours > 0 || unBillableHours > 0) {
+              tpl += '<br>';
+            }
+
             tpl += holidayHours + ' <img src="holidays.svg">';
           }
 
