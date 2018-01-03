@@ -19,7 +19,7 @@ $app->get('/buttons', function (Request $request) use ($app) {
     $results = "";
     if (getenv('REPORT_URL')) {
         $withApp = empty(getenv('REPORT_APP_NAME')) ? "" : getenv('REPORT_APP_NAME');
-        $results = "<a href='" . getenv('REPORT_URL') . "' target='_blank' ><button class='report-btn'><img class='outatime-logo' src='outatime-logo.svg'><b>Log your time</b><br>with OUTATIME" . $withApp . "</button></a>";
+        $results = "<a href='" . getenv('REPORT_URL') . "' target='_blank' ><button class='report-btn'><img class='outatime-logo' src='outatime-logo.svg'><b>Log your time</b><br><span>with OUTATIME</span></button></a>";
     }
 
     return $app->json($results);
@@ -186,7 +186,7 @@ EOT;
 
 function getClassNameByHour($billableHours, $unBillableHours, $holidayHours)
 {
-    $hours = $billableHours + $unBillableHours;
+    $hours = $billableHours + $unBillableHours + $holidayHours;
 
     $classes = ['event'];
 
