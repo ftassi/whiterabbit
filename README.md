@@ -13,3 +13,9 @@ TO RUN IT:
 php -S localhost:8080 -t web web/dev_routing.php
 ```
 And then open http://localhost:8080/index.html
+
+
+DEPLOY:
+```
+/vendor/bin/idx deploy --env=prod --go
+```
