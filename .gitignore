@@ -3,3 +3,4 @@ vendor
 bower_components
 cryptkey
 npm-debug.log
+.env

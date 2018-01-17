@@ -5,8 +5,11 @@ SETUP:
 composer install
 cd web
 bower install
-git-crypt unlock <cryptkey_file>
+cp .env.dist .env
 ```
+
+.env configuration is shared with lastpass.
+
 
 TO RUN IT:
 ```
