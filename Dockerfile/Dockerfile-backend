@@ -1,0 +1,18 @@
+FROM php:7.2.2-cli
+
+RUN apt-get update && apt-get install -y zlib1g-dev \
+    && docker-php-ext-install zip
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY --from=composer:1.6.3 /usr/bin/composer /usr/bin/composer
+
+COPY ./backend/composer.json /usr/src/app/composer.json
+COPY ./backend/composer.lock /usr/src/app/composer.lock
+
+WORKDIR /usr/src/app
+
+RUN composer install
+
+COPY ./backend /usr/src/app
+
+CMD php -S 0.0.0.0:3001 -t web/ web/dev_routing.php

@@ -1,0 +1,3 @@
+FROM redmine:3.4.4
+
+ADD data/redmine.db /usr/src/redmine/sqlite/redmine.db

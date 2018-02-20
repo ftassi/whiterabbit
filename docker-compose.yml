@@ -1,0 +1,26 @@
+version: "3"
+volumes:
+  backend_vendor:
+services:
+  redmine:
+    build:
+      context: .
+      dockerfile: ./Dockerfile/Dockerfile-redmine
+    restart: always
+    ports:
+      - "8080:3000"
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile/Dockerfile-backend
+    restart: always
+    links:
+      - redmine
+    environment:
+      REDMINE_API_KEY: 458a9b0fe7db512b1006007f110f5d1b4360fbfc
+      REDMINE_URL: "redmine:3000"
+    volumes:
+      - backend_vendor:/usr/src/app/vendor
+      - ./backend:/usr/src/app
+    ports:
+      - "8081:3001"
